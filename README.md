@@ -22,11 +22,11 @@ angular.module('my-module', [ngAsync.name])
 # Prerequisites
 
 - ES6 support in either your host environment or your build chain. At minimum your environment should support the following:
-	- Generators
+  - Generators
   - Modules
-	- Lambdas
-	- `const`/`let`
-	- Rest parameters
+  - Lambdas
+  - `const`/`let`
+  - Rest parameters
 - Angular should be available to the module via the module loader with `import 'angular'`.
 - Angular `^1.3.0`
 
