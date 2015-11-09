@@ -1,6 +1,6 @@
 {
   "name": "ng-async",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Generator based async/await implementation for Angular.js",
   "main": "src/index.js",
   "repository": {
