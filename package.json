@@ -1,0 +1,26 @@
+{
+  "name": "ng-async",
+  "version": "0.0.1",
+  "description": "Generator based async/await implementation for Angular.js",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magnetme/ng-async.git"
+  },
+  "keywords": [
+    "Angular",
+    "AngularJS",
+    "async",
+    "await"
+  ],
+  "author": "Tiddo Langerak <tiddolangerak@gmail.com> (https://github.com/TiddoLangerak/)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Magnetme/ng-async/issues"
+  },
+  "homepage": "https://github.com/Magnetme/ng-async#readme",
+  "devDependencies": {},
+  "peerDependencies": {
+    "angular": "^1.3.0"
+  }
+}
