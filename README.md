@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Magnetme/ng-async.svg?branch=master)](https://travis-ci.org/Magnetme/ng-async)
+
 # $async
 
 $async is an async/await implementation based on generators for use with angular.
