@@ -1,6 +1,6 @@
 {
   "name": "ng-async",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generator based async/await implementation for Angular.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register test/test.js"
