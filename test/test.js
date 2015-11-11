@@ -17,6 +17,7 @@ describe('$async(gen)', () => {
 
 	const $async = injector.get('$async');
 	const $q = injector.get('$q');
+	const $rootScope = injector.get('$rootScope');
 
 	it('should return a function', () => {
 		const asyncFunc = $async(function*() {});
@@ -130,6 +131,27 @@ describe('$async(gen)', () => {
 			})
 		};
 		obj.asyncFunc()
+			.then(() => done(), err => done(err));
+	});
+
+	it('should run code after yield in a digest cycle', (done) => {
+		const asyncFunc = $async(function*() {
+			yield new Promise(resolve => setTimeout(() => resolve()));
+			expect($rootScope.$$phase).to.exist;
+		});
+		asyncFunc()
+			.then(() => done(), err => done(err));
+	});
+
+	it('should run code after throwing yield in a digest cycle', (done) => {
+		const asyncFunc = $async(function*() {
+			try {
+				yield new Promise((resolve, reject) => setTimeout(() => reject()));
+			} catch(e) {
+				expect($rootScope.$$phase).to.exist;
+			}
+		});
+		asyncFunc()
 			.then(() => done(), err => done(err));
 	});
 
