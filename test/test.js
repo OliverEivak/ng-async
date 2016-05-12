@@ -4,7 +4,7 @@
 import 'babel-polyfill';
 import './mock';
 import angular from 'angular';
-import ngAsync from '../src';
+import ngAsync, { $async } from '../src';
 import chai from 'chai';
 import spies from 'chai-spies';
 
@@ -12,7 +12,7 @@ chai.use(spies);
 const expect = chai.expect;
 
 
-describe('$async(gen)', () => {
+describe('service $async(gen)', () => {
 	const injector = angular.injector(['ng', ngAsync.name ]);
 
 	const $async = injector.get('$async');
@@ -131,6 +131,60 @@ describe('$async(gen)', () => {
 		};
 		obj.asyncFunc()
 			.then(() => done(), err => done(err));
+	});
+
+});
+
+describe('util $async(service)', () => {
+	it('should throw if an unannotated service is passed', () => {
+		try {
+			$async(function*(){});
+			throw new Error('$async did not throw un unannotated service');
+		} catch (e) {}
+	});
+
+	it('should not throw if an annotated service is passed', () => {
+		$async([function*(){}]);
+	});
+
+	it('should return an annotated service', () => {
+		const wrapped = $async([function*(){}]);
+		expect(wrapped).to.be.an('array');
+	});
+
+	it('should prepend $async to the dependencies list', () => {
+		const wrapped = $async([function*(){}]);
+		expect(wrapped).to.have.length(2);
+		expect(wrapped[0]).to.equal('$async');
+	});
+
+	it('should pass the generator to the $async service when called', () => {
+		const func = function*(){};
+		const wrapped = $async(['foo', func]);
+		const fakeAsync = chai.spy(gen => gen);
+		wrapped.pop()(fakeAsync);
+		expect(fakeAsync).to.have.been.called.with(func);
+	});
+
+	it('should proxy all but the first arguments to the generator', () => {
+		const func = chai.spy(function*(foo){});
+		const wrapped = $async(['foo', func]);
+		const fakeAsync = gen => gen;
+		wrapped.pop()(fakeAsync, 'foo');
+		expect(func).to.have.been.called.with('foo');
+	});
+
+	it('should call the generator with the correct `this` argument', () => {
+		const self = {};
+		const func = chai.spy(function*() {
+			expect(this).to.equal(self);
+		});
+
+		const wrapped = $async([func]);
+		const fakeAsync = gen => gen;
+
+		wrapped.pop().call(self, fakeAsync);
+		expect(func).to.have.been.called();
 	});
 
 });

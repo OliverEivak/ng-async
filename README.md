@@ -9,6 +9,8 @@ $async is an async/await implementation based on generators for use with angular
 `npm install ng-async`
 
 # Usage
+
+## As service
 ```javascript
 import ngAsync from 'ng-async';
 
@@ -20,6 +22,23 @@ angular.module('my-module', [ngAsync.name])
 		});
 	});
 ```
+
+## To wrap a service/controller
+
+```javascript
+import ngAsync, { $async } from 'ng-async';
+
+angular.module('my-module', [ngAsync.name])
+	.controller('my-controller', $async(function*($http) {
+		'ngInject';
+		const { data : users } = yield $http.get('/users');
+		$scope.users = users;
+	}));
+```
+
+Note: To wrap a service/controller it *must* be explicitly annotated. The example uses [ng-annotate](https://github.com/olov/ng-annotate) to do it for us.
+
+Note: keep in mind that an `$async` function returns a promise, not a value. This is especially important with factories, since their return value will be used for injection.
 
 # Prerequisites
 
