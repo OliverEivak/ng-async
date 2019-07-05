@@ -72,3 +72,11 @@ export const $async = function(annotatedService) {
 
 	return annotatedService;
 }
+
+/**
+ * Function to wrap any generator function in `$async`, regardless if it's used
+ * in an Angular application or not. The main use case of this function is to
+ * make it possible to use it with babel's transform-async-to-module-method
+ * plugin.
+ */
+export const wrap = angular.injector(['ng', 'mm.$async']).get('$async');

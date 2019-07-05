@@ -12,6 +12,35 @@ $async is an async/await implementation based on generators for use with angular
 
 # Usage
 
+## Experimental: native async-await
+1. Install babel's `transform-async-to-module-method` plugin
+2. Configure it as follows:
+```json
+"plugins" : [
+	["transform-async-to-module-method", {
+		"module": "ng-async",
+		"method": "wrap"
+	}]
+]
+```
+3. Use the native async-await syntax:
+
+```javascript
+angular.module('my-module', [])
+	.controller('my-controller', () => {
+		async function init() {
+			const { data : users } = await $http.get('/users');
+			$scope.users = users;
+		}
+	});
+```
+
+Note: This is still experimental, may contain bugs
+
+Note2: Using this plugin will result in `angular` being imported in every file
+uses async/await. Make sure to disable this plugin for scripts where you don't
+want this.
+
 ## As service
 ```javascript
 import ngAsync from 'ng-async';
